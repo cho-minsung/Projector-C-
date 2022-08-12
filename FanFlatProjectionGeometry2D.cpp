@@ -1,0 +1,152 @@
+#include "FanFlatProjectionGeometry2D.h"
+#include "GeometryUtil2D.h"
+
+#include <cstring>
+#include <sstream>
+
+using namespace std;
+
+//----------------------------------------------------------------------------------------
+// Default constructor. Sets all variables to zero. 
+CFanFlatProjectionGeometry2D::CFanFlatProjectionGeometry2D()
+{
+	_clear();
+	m_fOriginSourceDistance = 0.0f;
+	m_fOriginDetectorDistance = 0.0f;
+}
+
+//----------------------------------------------------------------------------------------
+// Constructor.
+CFanFlatProjectionGeometry2D::CFanFlatProjectionGeometry2D(int _iProjectionAngleCount,
+	int _iDetectorCount,
+	float _fDetectorWidth,
+	const float* _pfProjectionAngles,
+	float _fOriginSourceDistance,
+	float _fOriginDetectorDistance)
+{
+	this->initialize(_iProjectionAngleCount,
+		_iDetectorCount,
+		_fDetectorWidth,
+		_pfProjectionAngles,
+		_fOriginSourceDistance,
+		_fOriginDetectorDistance);
+}
+
+//----------------------------------------------------------------------------------------
+// Copy Constructor
+CFanFlatProjectionGeometry2D::CFanFlatProjectionGeometry2D(const CFanFlatProjectionGeometry2D& _projGeom)
+{
+	_clear();
+	this->initialize(_projGeom.m_iProjectionAngleCount,
+		_projGeom.m_iDetectorCount,
+		_projGeom.m_fDetectorWidth,
+		_projGeom.m_pfProjectionAngles,
+		_projGeom.m_fOriginSourceDistance,
+		_projGeom.m_fOriginDetectorDistance);
+}
+
+//----------------------------------------------------------------------------------------
+// Assignment operator.
+CFanFlatProjectionGeometry2D& CFanFlatProjectionGeometry2D::operator=(const CFanFlatProjectionGeometry2D& _other)
+{
+	if (m_bInitialized)
+		delete[] m_pfProjectionAngles;
+	m_bInitialized = _other.m_bInitialized;
+	if (m_bInitialized) {
+		m_iProjectionAngleCount = _other.m_iProjectionAngleCount;
+		m_iDetectorCount = _other.m_iDetectorCount;
+		m_fDetectorWidth = _other.m_fDetectorWidth;
+		m_pfProjectionAngles = new float[m_iProjectionAngleCount];
+		memcpy(m_pfProjectionAngles, _other.m_pfProjectionAngles, sizeof(float) * m_iProjectionAngleCount);
+		m_fOriginSourceDistance = _other.m_fOriginSourceDistance;
+		m_fOriginDetectorDistance = _other.m_fOriginDetectorDistance;
+	}
+	return *this;
+}
+//----------------------------------------------------------------------------------------
+// Destructor.
+CFanFlatProjectionGeometry2D::~CFanFlatProjectionGeometry2D()
+{
+
+}
+
+
+//----------------------------------------------------------------------------------------
+// Initialization.
+bool CFanFlatProjectionGeometry2D::initialize(int _iProjectionAngleCount,
+	int _iDetectorCount,
+	float _fDetectorWidth,
+	const float* _pfProjectionAngles,
+	float _fOriginSourceDistance,
+	float _fOriginDetectorDistance)
+{
+	m_fOriginSourceDistance = _fOriginSourceDistance;
+	m_fOriginDetectorDistance = _fOriginDetectorDistance;
+	_initialize(_iProjectionAngleCount,
+		_iDetectorCount,
+		_fDetectorWidth,
+		_pfProjectionAngles);
+
+	// success
+	m_bInitialized = _check();
+	return m_bInitialized;
+}
+
+//----------------------------------------------------------------------------------------
+// Clone
+CProjectionGeometry2D* CFanFlatProjectionGeometry2D::clone()
+{
+	return new CFanFlatProjectionGeometry2D(*this);
+}
+
+//----------------------------------------------------------------------------------------
+// is equal
+bool CFanFlatProjectionGeometry2D::isEqual(CProjectionGeometry2D* _pGeom2) const
+{
+	if (_pGeom2 == NULL) return false;
+
+	// try to cast argument to CFanFlatProjectionGeometry2D
+	CFanFlatProjectionGeometry2D* pGeom2 = dynamic_cast<CFanFlatProjectionGeometry2D*>(_pGeom2);
+	if (pGeom2 == NULL) return false;
+
+	// both objects must be initialized
+	if (!m_bInitialized || !pGeom2->m_bInitialized) return false;
+
+	// check all values
+	if (m_iProjectionAngleCount != pGeom2->m_iProjectionAngleCount) return false;
+	if (m_iDetectorCount != pGeom2->m_iDetectorCount) return false;
+	if (m_fDetectorWidth != pGeom2->m_fDetectorWidth) return false;
+	if (m_fOriginSourceDistance != pGeom2->m_fOriginSourceDistance) return false;
+	if (m_fOriginDetectorDistance != pGeom2->m_fOriginDetectorDistance) return false;
+
+	for (int i = 0; i < m_iProjectionAngleCount; ++i) {
+		if (m_pfProjectionAngles[i] != pGeom2->m_pfProjectionAngles[i]) return false;
+	}
+
+	return true;
+}
+
+//----------------------------------------------------------------------------------------
+// Is of type
+bool CFanFlatProjectionGeometry2D::isOfType(const std::string& _sType)
+{
+	return (_sType == "fanflat");
+}
+
+
+//----------------------------------------------------------------------------------------
+CFanFlatVecProjectionGeometry2D* CFanFlatProjectionGeometry2D::toVectorGeometry()
+{
+	SFanProjection* vectors = genFanProjections(m_iProjectionAngleCount,
+		m_iDetectorCount,
+		m_fOriginSourceDistance,
+		m_fOriginDetectorDistance,
+		m_fDetectorWidth,
+		m_pfProjectionAngles);
+
+	CFanFlatVecProjectionGeometry2D* vecGeom = new CFanFlatVecProjectionGeometry2D();
+	vecGeom->initialize(m_iProjectionAngleCount, m_iDetectorCount, vectors);
+	delete[] vectors;
+	return vecGeom;
+}
+
