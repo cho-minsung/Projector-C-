@@ -265,9 +265,11 @@ void CFloat32Data2D::_allocateData()
 	ASTRA_ASSERT(m_ppfData2D == NULL);
 
 	if (!m_pCustomMemory) {
+		std::cout << "allocating contiguous block" << std::endl;
 
 		// allocate contiguous block
 #ifdef _MSC_VER
+		std::cout << "_aligned_malloc" << std::endl;
 		m_pfData = (float*)_aligned_malloc(m_iSize * sizeof(float), 16);
 #else
 		int ret = posix_memalign((void**)&m_pfData, 16, m_iSize * sizeof(float));
@@ -276,6 +278,8 @@ void CFloat32Data2D::_allocateData()
 
 	}
 	else {
+		std::cout << "allocating custom memory block" << std::endl;
+
 		m_pfData = m_pCustomMemory->m_fPtr;
 	}
 

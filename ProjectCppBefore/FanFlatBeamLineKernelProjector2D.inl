@@ -9,6 +9,7 @@ policy_weight(p, rayindex, volindex, weight) {
 	while (false)
 }
 */
+#include <iostream>
 
 #define policy_weight(p,rayindex,volindex,weight) do { if (p.pixelPrior(volindex)) { p.addWeight(rayindex, volindex, weight); p.pixelPosterior(volindex); } } while (false)
 
@@ -187,8 +188,17 @@ void CFanFlatBeamLineKernelProjector2D::projectBlock_internal(int _iProjFrom, in
 
 			// POLICY: RAY POSTERIOR
 			p.rayPosterior(iRayIndex);
+			//std::cout << p->policy1.m_pVolumeData.getData()[iRayIndex] << std::endl;
 
 		} // end loop detector
+
+		std::cout << Dx << ",";
+		std::cout << Dy << ",";
+		std::cout << Rx << ",";
+		std::cout << Ry << ",";
+		std::cout << S << ",";
+		std::cout << T << std::endl;
+
 	} // end loop angles
 
 	// Delete created vec geometry if required

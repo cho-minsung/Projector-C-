@@ -1,5 +1,6 @@
 #include "GeometryUtil2D.h"
 
+#include <iostream>
 #include <cmath>
 #include <cstdio>
 
@@ -46,9 +47,20 @@ SParProjection* genParProjections(unsigned int iProjAngles,
 	return p;
 }
 
+/*
+#define ROTATE0(name,i,alpha) do { pProjs[i].f##name##X = f##name##X0 * cos(alpha) - f##name##Y0 * sin(alpha); pProjs[i].f##name##Y = f##name##X0 * sin(alpha) + f##name##Y0 * cos(alpha); } while(0)
 
-SFanProjection* genFanProjections(unsigned int iProjAngles,
-	unsigned int iProjDets,
+void rotate(name, i, alpha) {
+	pProjs[i].f##name##X = f##name##X0 * cos(alpha) - f##name##Y0 * sin(alpha);
+	pProjs[i].fSrcY = fSrcX0 * sin(alpha) + fSrcY0 * cos(alpha);
+	pProjs[i].fDetSY = fDetSX0 * sin(alpha) + fDetSY0 * cos(alpha);
+}
+*/
+
+
+SFanProjection* genFanProjections(
+	unsigned int iProjAngles,
+	unsigned int iProjDets,  // detector count
 	double fOriginSource, double fOriginDetector,
 	double fDetSize,
 	const float* pfAngles)
@@ -62,6 +74,8 @@ SFanProjection* genFanProjections(unsigned int iProjAngles,
 	float fDetUY0 = 0.0f;
 	float fDetSX0 = iProjDets * fDetUX0 / -2.0f;
 	float fDetSY0 = fOriginDetector;
+
+	std::cout << "source distance: " << fOriginSource << std::endl;
 
 #define ROTATE0(name,i,alpha) do { pProjs[i].f##name##X = f##name##X0 * cos(alpha) - f##name##Y0 * sin(alpha); pProjs[i].f##name##Y = f##name##X0 * sin(alpha) + f##name##Y0 * cos(alpha); } while(0)
 	for (unsigned int i = 0; i < iProjAngles; ++i) {

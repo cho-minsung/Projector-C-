@@ -1,4 +1,5 @@
 #include "Float32VolumeData2D.h"
+#include <iostream>
 
 //----------------------------------------------------------------------------------------
 // Default constructor
@@ -21,6 +22,7 @@ CFloat32VolumeData2D::CFloat32VolumeData2D(CVolumeGeometry2D* _pGeometry)
 // Create an instance of the CFloat32VolumeData2D class with initialization of the data.
 CFloat32VolumeData2D::CFloat32VolumeData2D(CVolumeGeometry2D* _pGeometry, float* _pfData)
 {
+	std::cout << "initialized with pointer" << std::endl;
 	m_bInitialized = false;
 	m_bInitialized = initialize(_pGeometry, _pfData);
 }
@@ -29,6 +31,7 @@ CFloat32VolumeData2D::CFloat32VolumeData2D(CVolumeGeometry2D* _pGeometry, float*
 // Create an instance of the CFloat32VolumeData2D class with initialization of the data.
 CFloat32VolumeData2D::CFloat32VolumeData2D(CVolumeGeometry2D* _pGeometry, float _fScalar)
 {
+	std::cout << "initialized with scalar" << std::endl;
 	m_bInitialized = false;
 	m_bInitialized = initialize(_pGeometry, _fScalar);
 }

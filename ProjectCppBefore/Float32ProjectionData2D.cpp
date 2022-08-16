@@ -26,6 +26,7 @@ along with the ASTRA Toolbox. If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "Float32ProjectionData2D.h"
+#include <iostream>
 
 //----------------------------------------------------------------------------------------
 // Default constructor
@@ -48,6 +49,7 @@ CFloat32ProjectionData2D::CFloat32ProjectionData2D(CProjectionGeometry2D* _pGeom
 // Create an instance of the CFloat32ProjectionData2D class with initialization of the data.
 CFloat32ProjectionData2D::CFloat32ProjectionData2D(CProjectionGeometry2D* _pGeometry, float* _pfData)
 {
+	std::cout << "data set by pointer." << std::endl;
 	m_bInitialized = false;
 	m_bInitialized = initialize(_pGeometry, _pfData);
 }
@@ -56,6 +58,8 @@ CFloat32ProjectionData2D::CFloat32ProjectionData2D(CProjectionGeometry2D* _pGeom
 // Create an instance of the CFloat32ProjectionData2D class with scalar initialization of the data.
 CFloat32ProjectionData2D::CFloat32ProjectionData2D(CProjectionGeometry2D* _pGeometry, float _fScalar)
 {
+	std::cout << "data set by scalar." << std::endl;
+
 	m_bInitialized = false;
 	m_bInitialized = initialize(_pGeometry, _fScalar);
 }

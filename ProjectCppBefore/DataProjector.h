@@ -213,6 +213,7 @@ static CDataProjectorInterface* dispatchDataProjector(CProjector2D* _pProjector,
 		return dispatchDataProjector(_pProjector, _policy1, _policy2, _bUsePolicy1, _bUsePolicy2);
 	}
 	else {
+		std::cout << "combined" << std::endl;
 		return dispatchDataProjector(_pProjector, Combine3Policy<Policy1, Policy2, Policy3>(_policy1, _policy2, _policy3));
 	}
 }

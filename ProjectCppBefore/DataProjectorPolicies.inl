@@ -1,6 +1,8 @@
 #ifndef _INC_ASTRA_DATAPROJECTORPOLICIES_INLINE
 #define _INC_ASTRA_DATAPROJECTORPOLICIES_INLINE
 
+#include <iostream>
+
 
 
 //----------------------------------------------------------------------------------------
@@ -16,6 +18,8 @@ DefaultFPPolicy::DefaultFPPolicy(CFloat32VolumeData2D* _pVolumeData,
 {
 	m_pProjectionData = _pProjectionData;
 	m_pVolumeData = _pVolumeData;
+	std::cout << "DefaultFPPolicy used" << std::endl;
+
 }
 //----------------------------------------------------------------------------------------
 DefaultFPPolicy::~DefaultFPPolicy()
@@ -38,6 +42,7 @@ bool DefaultFPPolicy::pixelPrior(int _iVolumeIndex)
 void DefaultFPPolicy::addWeight(int _iRayIndex, int _iVolumeIndex, float _fWeight)
 {
 	m_pProjectionData->getData()[_iRayIndex] += m_pVolumeData->getData()[_iVolumeIndex] * _fWeight;
+	//std::cout << m_pProjectionData->getData()[_iRayIndex] << std::endl;
 }
 //----------------------------------------------------------------------------------------
 void DefaultFPPolicy::rayPosterior(int _iRayIndex)
@@ -65,6 +70,8 @@ DefaultBPPolicy::DefaultBPPolicy(CFloat32VolumeData2D* _pVolumeData,
 {
 	m_pProjectionData = _pProjectionData;
 	m_pVolumeData = _pVolumeData;
+	std::cout << "DefaultBPPolicy used" << std::endl;
+
 }
 //----------------------------------------------------------------------------------------
 DefaultBPPolicy::~DefaultBPPolicy()
@@ -118,6 +125,9 @@ DiffFPPolicy::DiffFPPolicy(CFloat32VolumeData2D* _pVolumeData,
 	m_pDiffProjectionData = _pDiffProjectionData;
 	m_pBaseProjectionData = _pBaseProjectionData;
 	m_pVolumeData = _pVolumeData;
+
+	std::cout << "DiffFPPolicy used" << std::endl;
+
 }
 //----------------------------------------------------------------------------------------
 DiffFPPolicy::~DiffFPPolicy()
@@ -167,6 +177,8 @@ StorePixelWeightsPolicy::StorePixelWeightsPolicy(SPixelWeight* _pPixelWeights, i
 	m_iStoredPixelCount = 0;
 	m_pPixelWeights = _pPixelWeights;
 	m_iMaxPixelCount = _iMaxPixelCount;
+	std::cout << "store pixel weight used" << std::endl;
+
 }
 //----------------------------------------------------------------------------------------	
 StorePixelWeightsPolicy::~StorePixelWeightsPolicy()
@@ -222,6 +234,9 @@ TotalPixelWeightBySinogramPolicy::TotalPixelWeightBySinogramPolicy(CFloat32Proje
 {
 	m_pPixelWeight = _pPixelWeight;
 	m_pSinogram = _pSinogram;
+
+	std::cout << "TotalPixelWeightBySinogramPolicy used" << std::endl;
+
 }
 //----------------------------------------------------------------------------------------	
 TotalPixelWeightBySinogramPolicy::~TotalPixelWeightBySinogramPolicy()
@@ -270,6 +285,8 @@ TotalPixelWeightPolicy::TotalPixelWeightPolicy()
 TotalPixelWeightPolicy::TotalPixelWeightPolicy(CFloat32VolumeData2D* _pPixelWeight)
 {
 	m_pPixelWeight = _pPixelWeight;
+	std::cout << "TotalPixelWeightPolicy used" << std::endl;
+
 }
 //----------------------------------------------------------------------------------------	
 TotalPixelWeightPolicy::~TotalPixelWeightPolicy()
@@ -317,6 +334,8 @@ TotalRayLengthPolicy::TotalRayLengthPolicy()
 TotalRayLengthPolicy::TotalRayLengthPolicy(CFloat32ProjectionData2D* _pRayLength)
 {
 	m_pRayLength = _pRayLength;
+	std::cout << "TotalRayLengthPolicy used" << std::endl;
+
 }
 //----------------------------------------------------------------------------------------	
 TotalRayLengthPolicy::~TotalRayLengthPolicy()

@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
     double phantom[262144];
     float phantomf[262144];
 
-    std::ifstream fileIn("modified_shepp_logan_512.bin", std::ios::binary);
+    std::ifstream fileIn("../modified_shepp_logan_512.bin", std::ios::binary);
 
     if (fileIn) {
         fileIn.seekg(0, fileIn.end);
@@ -134,6 +134,7 @@ int main(int argc, char* argv[])
     }
     else {
         std::cout << "File does not exist." << std::endl;
+        return 1;
     }
 
     fileIn.read(reinterpret_cast<char*>(&phantom), sizeof(double) * 262144);
